@@ -13,7 +13,7 @@
 'use strict';
 
 var audit = require('gulp-audit');
-var compilerPackage = require('google-closure-compiler');
+var compilerPackage = require('google-closure-compiler-js');
 var concat = require('gulp-concat');
 var exec = require('child_process').exec;
 var fs = require('fs');
@@ -132,13 +132,12 @@ defineBuildTask('ShadowDOM');
 defineBuildTask('MutationObserver');
 
 gulp.task('CustomElementsV1', function () {
-  return gulp.src('./src/CustomElements/v1/CustomElements.js', {base: './'})
+  return gulp.src(['./src/CustomElements/v1/CustomElements.js', './externs/html5.js'], {base: './'})
       .pipe(closureCompiler({
           compilation_level: 'ADVANCED',
           warning_level: 'VERBOSE',
           language_in: 'ECMASCRIPT6_STRICT',
           language_out: 'ECMASCRIPT5_STRICT',
-          externs: 'externs/html5.js',
           js_output_file: 'CustomElementsV1.min.js'
         }))
       .pipe(gulp.dest('./dist'));
